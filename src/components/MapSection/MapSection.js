@@ -22,15 +22,10 @@ const locations = [
   }
 ];
 
-const locationTypes = {
-  venue: 'Main Event',
-  hotel: 'Hotels',
-  attraction: 'Other Locations'
-};
-
 const MapSection = () => {
   const intl = useIntl();
   const [selectedLocation, setSelectedLocation] = React.useState(null);
+  const [activeTab, setActiveTab] = React.useState('venue');
   const [map, setMap] = React.useState(null);
   const mapCenter = { lat: 25.4242, lng: -100.1525 };
 
@@ -72,6 +67,12 @@ const MapSection = () => {
     return acc;
   }, {});
 
+  const locationTypes = {
+    venue: intl.formatMessage({ id: 'map.tabs.venue' }),
+    hotel: intl.formatMessage({ id: 'map.tabs.hotel' }),
+    attraction: intl.formatMessage({ id: 'map.tabs.attraction' })
+  };
+
   return (
     <section id="location" className={styles.section}>
       <motion.h2
@@ -91,67 +92,84 @@ const MapSection = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <div className={styles.mapContainer}>
-          <LoadScript 
-            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-            onLoad={() => console.log('Google Maps API loaded')}
-          >
-            <GoogleMap
-              mapContainerStyle={mapStyles}
-              zoom={14}
-              center={mapCenter}
-              onLoad={onLoad}
-              onUnmount={onUnmount}
+        <div className={styles.tabsContainer}>
+          {Object.entries(locationTypes).map(([type, label]) => (
+            <button
+              key={type}
+              className={`${styles.tabButton} ${activeTab === type ? styles.active : ''}`}
+              onClick={() => setActiveTab(type)}
             >
-              {map && locations.map(location => (
-                <Marker
-                  key={location.id}
-                  position={location.position}
-                  icon={{
-                    url: getMarkerIcon(location.type),
-                    scaledSize: new window.google.maps.Size(32, 32)
-                  }}
-                  onClick={() => handleLocationClick(location)}
-                />
-              ))}
-
-              {selectedLocation && (
-                <InfoWindow
-                  position={selectedLocation.position}
-                  onCloseClick={() => setSelectedLocation(null)}
-                >
-                  <div className={styles.infoWindowContent}>
-                    <h3>{intl.formatMessage({ id: `map.${selectedLocation.type}.name` })}</h3>
-                    <p>{intl.formatMessage({ id: `map.${selectedLocation.type}.address` })}</p>
-                  </div>
-                </InfoWindow>
-              )}
-            </GoogleMap>
-          </LoadScript>
+              {label}
+            </button>
+          ))}
         </div>
 
-        <div className={styles.locationsList}>
-          {Object.entries(groupedLocations).map(([type, locations]) => (
-            <div key={type} className={styles.locationGroup}>
-              <h3 className={styles.locationGroupTitle}>
-                {locationTypes[type]}
-              </h3>
-              {locations.map(location => (
-                <div
-                  key={location.id}
-                  className={`${styles.locationItem} ${selectedLocation?.id === location.id ? styles.active : ''}`}
-                  onClick={() => handleLocationClick(location)}
-                >
-                  <div className={styles.locationName}>
-                    {intl.formatMessage({ id: `map.${location.type}.name` })}
+        <div className={styles.mapAndListContainer}>
+          <div className={styles.locationsList}>
+            {Object.entries(groupedLocations).map(([type, locations]) => (
+              <div
+                key={type}
+                className={`${styles.locationGroup} ${activeTab === type ? styles.active : ''}`}
+              >
+                <h3 className={styles.locationGroupTitle}>
+                  {locationTypes[type]}
+                </h3>
+                {locations.map(location => (
+                  <div
+                    key={location.id}
+                    className={`${styles.locationItem} ${selectedLocation?.id === location.id ? styles.active : ''}`}
+                    onClick={() => handleLocationClick(location)}
+                  >
+                    <div className={styles.locationName}>
+                      {intl.formatMessage({ id: `map.${location.type}.name` })}
+                    </div>
+                    <div className={styles.locationAddress}>
+                      {intl.formatMessage({ id: `map.${location.type}.address` })}
+                    </div>
                   </div>
-                  <div className={styles.locationAddress}>
-                    {intl.formatMessage({ id: `map.${location.type}.address` })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.mapContainer}>
+            <LoadScript 
+              googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+              onLoad={() => console.log('Google Maps API loaded')}
+            >
+              <GoogleMap
+                mapContainerStyle={mapStyles}
+                zoom={14}
+                center={mapCenter}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+              >
+                {map && locations.map(location => (
+                  <Marker
+                    key={location.id}
+                    position={location.position}
+                    icon={{
+                      url: getMarkerIcon(location.type),
+                      scaledSize: new window.google.maps.Size(32, 32)
+                    }}
+                    onClick={() => handleLocationClick(location)}
+                  />
+                ))}
+
+                {selectedLocation && (
+                  <InfoWindow
+                    position={selectedLocation.position}
+                    onCloseClick={() => setSelectedLocation(null)}
+                  >
+                    <div className={styles.infoWindowContent}>
+                      <h3>{intl.formatMessage({ id: `map.${selectedLocation.type}.name` })}</h3>
+                      <p>{intl.formatMessage({ id: `map.${selectedLocation.type}.address` })}</p>
+                    </div>
+                  </InfoWindow>
+                )}
+              </GoogleMap>
+            </LoadScript>
+          </div>
         </div>
       </motion.div>
     </section>

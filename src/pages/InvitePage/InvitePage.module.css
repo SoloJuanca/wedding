@@ -5,3 +5,49 @@
   overflow-x: hidden;
   position: relative;
 } 
+
+.imageSection {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.between {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin-top: -40px; /* adjust as needed for wave overlap */
+  position: relative;
+  z-index: 1;
+}
+
+.shapeDivider {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 100%;
+  line-height: 0;
+  z-index: 2;
+}
+
+.shapeDividerBottom {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  line-height: 0;
+  z-index: 2;
+}
+
+.shapeDivider svg,
+.shapeDividerBottom svg {
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 10px;
+}
+
+.shapeDivider .shapeFill,
+.shapeDividerBottom .shapeFill {
+  fill: #FFFFFF;
+}

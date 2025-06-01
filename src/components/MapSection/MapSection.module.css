@@ -44,7 +44,7 @@
 .title {
   font-family: var(--secondaryFont);
   font-size: 2.5rem;
-  color: #4a4a4a;
+  color: #716283;
   margin-bottom: 2rem;
   text-align: center;
   position: relative;
@@ -56,17 +56,53 @@
   display: block;
   width: 60px;
   height: 3px;
-  background-color: #FFDAE2;
+  background-color: #96849C;
   margin: 1rem auto 0;
 }
 
 .contentContainer {
   position: relative;
   z-index: 2;
-  display: flex;
-  gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #96849C;
+  background-color: transparent;
+  color: #716283;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: var(--secondaryFont);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.tabButton:hover {
+  background-color: rgba(255, 218, 226, 0.1);
+}
+
+.tabButton.active {
+  background-color: #96849C;
+  color: #fff;
+}
+
+.mapAndListContainer {
+  display: flex;
+  gap: 2rem;
   height: 600px;
 }
 
@@ -85,21 +121,27 @@
   background-color: #FFF5F7;
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(255, 218, 226, 0.2);
-  overflow-y: auto;
   border: 1px solid rgba(255, 218, 226, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .locationGroup {
-  margin-bottom: 2rem;
+  display: none;
+}
+
+.locationGroup.active {
+  display: block;
 }
 
 .locationGroupTitle {
   font-family: var(--secondaryFont);
   font-size: 1.5rem;
-  color: #4a4a4a;
+  color: #716283;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #FFDAE2;
+  border-bottom: 2px solid #96849C;
 }
 
 .locationItem {
@@ -115,27 +157,27 @@
 .locationItem:hover {
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(255, 218, 226, 0.3);
-  border-color: #FFDAE2;
+  border-color: #96849C;
 }
 
 .locationItem.active {
-  border-left: 4px solid #FFDAE2;
+  border-left: 4px solid #96849C;
   background-color: #fff;
 }
 
 .locationName {
   font-weight: 600;
-  color: #4a4a4a;
+  color: #716283;
   margin-bottom: 0.25rem;
 }
 
 .locationAddress {
   font-size: 0.9rem;
-  color: #666;
+  color: #96849C;
 }
 
 @media (max-width: 1024px) {
-  .contentContainer {
+  .mapAndListContainer {
     flex-direction: column;
     height: auto;
   }
@@ -146,7 +188,7 @@
   }
 
   .locationsList {
-    max-height: 400px;
+    max-height: none;
   }
 }
 
@@ -155,12 +197,14 @@
     font-size: 2rem;
   }
 
-  .mapContainer {
-    height: 350px;
+  .tabButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    min-width: 100px;
   }
 
-  .locationsList {
-    max-height: 350px;
+  .mapContainer {
+    height: 350px;
   }
 
   .section {
@@ -179,18 +223,18 @@
   font-family: 'Montserrat', sans-serif;
   background-color: #FFF5F7;
   border-radius: 8px;
-  border: 1px solid #FFDAE2;
+  border: 1px solid #96849C;
 }
 
 .infoWindowContent h3 {
-  color: #4a4a4a;
+  color: #716283;
   margin: 0 0 8px 0;
   font-size: 1.1rem;
   font-weight: 600;
 }
 
 .infoWindowContent p {
-  color: #666;
+  color: #96849C;
   margin: 0;
   font-size: 0.9rem;
 } 

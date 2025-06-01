@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Suit Jacket -->
+  <path d="M20 20H44V48H20V20Z" stroke="#716283" stroke-width="2" fill="none"/>
+  <path d="M20 20V12H44V20" stroke="#716283" stroke-width="2" fill="none"/>
+  <!-- Lapel -->
+  <path d="M32 20V12" stroke="#716283" stroke-width="2"/>
+  <!-- Tie -->
+  <path d="M32 20L28 48M32 20L36 48" stroke="#96849C" stroke-width="2"/>
+  <path d="M28 48H36" stroke="#96849C" stroke-width="2"/>
+  <!-- Buttons -->
+  <circle cx="32" cy="28" r="1.5" fill="#96849C"/>
+  <circle cx="32" cy="36" r="1.5" fill="#96849C"/>
+  <circle cx="32" cy="44" r="1.5" fill="#96849C"/>
+</svg> 

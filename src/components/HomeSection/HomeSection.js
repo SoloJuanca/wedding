@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import styles from './HomeSection.module.css';
 import backgroundImage from '../../assets/Center.png';
 import heroImage from '../../assets/images/hero.jpeg';
+import Itinerary from './Itinerary';
 
 const HomeSection = () => {
   const intl = useIntl();

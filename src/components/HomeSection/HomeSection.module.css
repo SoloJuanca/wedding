@@ -48,7 +48,7 @@
   font-family: var(--secondaryFont);
   font-weight: 500;
   font-size: 2.5rem;
-  color: #4a4a4a;
+  color: #716283;
   margin-bottom: 1rem;
   line-height: 1.4;
 }
@@ -81,7 +81,7 @@
 .subtitle {
   font-family: var(--secondaryFont);
   font-size: 1.5rem;
-  color: #666;
+  color: #96849C;
   margin-bottom: 1rem;
   font-weight: normal;
 }

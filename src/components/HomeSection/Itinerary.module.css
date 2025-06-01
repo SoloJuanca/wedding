@@ -1,0 +1,130 @@
+.itineraryContainer {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+.title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+  color: #716283;
+}
+
+.subtitle {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #96849C;
+  font-style: italic;
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e0e0e0;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.timelineItem {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  margin-bottom: 2.5rem;
+  min-height: 80px;
+  z-index: 1;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineItem.left {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.timelineItem.right {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.card {
+  background: #fff5f7;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  padding: 1rem 1.5rem;
+  min-width: 180px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.time {
+  font-weight: bold;
+  color: #96849C;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.date {
+  font-size: 0.9rem;
+  color: #716283;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  font-style: italic;
+}
+
+.event {
+  font-size: 1.1rem;
+  color: #444;
+  text-align: center;
+}
+
+.dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 3px solid #96849C;
+  border-radius: 50%;
+  z-index: 3;
+} 

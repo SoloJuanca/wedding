@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Child Silhouette -->
+  <circle cx="32" cy="24" r="8" stroke="#716283" stroke-width="2" fill="none"/> <!-- Head -->
+  <path d="M24 40C24 36 28 32 32 32C36 32 40 36 40 40" stroke="#716283" stroke-width="2" fill="none"/> <!-- Body -->
+  <path d="M28 48L36 48" stroke="#716283" stroke-width="2"/> <!-- Legs -->
+  <!-- Cross Lines -->
+  <path d="M16 16L48 48" stroke="#96849C" stroke-width="2"/>
+  <path d="M48 16L16 48" stroke="#96849C" stroke-width="2"/>
+  <!-- Circle around cross -->
+  <circle cx="32" cy="32" r="24" stroke="#96849C" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+</svg> 
