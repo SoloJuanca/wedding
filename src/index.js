@@ -1,13 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { IntlProvider } from 'react-intl';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
+
+const IntlAndRouter = () => {
+  const { locale, messages } = useLanguage();
+  console.log('Locale:', locale, 'Messages:', messages); // Debug line
+
+  return (
+    <IntlProvider messages={messages} locale={locale} defaultLocale="es">
+      <Router>
+        <App />
+      </Router>
+    </IntlProvider>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <LanguageProvider>
+      <IntlAndRouter />
+    </LanguageProvider>
   </React.StrictMode>
 );
 
