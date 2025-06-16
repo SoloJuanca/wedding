@@ -1,14 +1,14 @@
 .itineraryContainer {
   background: #fff;
   border-radius: 16px;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 4rem;
   margin: 2rem auto;
   max-width: 500px;
 }
 
 .title {
   text-align: center;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--secondaryFont);
   font-size: 1.7rem;
   margin-bottom: 0.5rem;
   color: #716283;
@@ -16,7 +16,7 @@
 
 .subtitle {
   text-align: center;
-  font-family: 'Playfair Display', serif;
+  font-family: var(--secondaryFont);
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   color: #96849C;
@@ -45,6 +45,7 @@
 .timelineItem {
   display: flex;
   justify-content: flex-end;
+  gap: 1rem;
   align-items: center;
   position: relative;
   margin-bottom: 2.5rem;
@@ -71,7 +72,7 @@
   border-radius: 12px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.03);
   padding: 1rem 1.5rem;
-  min-width: 180px;
+  min-width: 140px;
   max-width: 220px;
   display: flex;
   flex-direction: column;
@@ -112,7 +113,7 @@
 
 .event {
   font-size: 1.1rem;
-  color: #444;
+  color: #716283;
   text-align: center;
 }
 

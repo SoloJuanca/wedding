@@ -1,17 +1,15 @@
 import React from 'react';
 import styles from './Itinerary.module.css';
-import civilIcon from '../../assets/images/civil.png';
-import misaIcon from '../../assets/images/misa.png';
-import partyIcon from '../../assets/images/party.png';
+// Images are now served from public/images/
 
 const events = [
-  { time: '6:00 p.m.', title: 'Boda Civil', icon: civilIcon },
-  { time: '7:00 p.m.', title: 'Misa', icon: misaIcon },
-  { time: '8:00 p.m.', title: 'Fiesta', icon: partyIcon },
+  { time: '6:00 p.m.', title: 'Boda Civil', icon: '/images/civil.png' },
+  { time: '7:00 p.m.', title: 'Misa', icon: '/images/misa.png' },
+  { time: '8:00 p.m.', title: 'Fiesta', icon: '/images/party.png' },
 ];
 
 const Itinerary = () => (
-  <div className={styles.itineraryContainer}>
+  <div id="itinerary" className={styles.itineraryContainer}>
     <h2 className={styles.title}>Itinerario</h2>
     <h3 className={styles.subtitle}>Sábado 25 de Octubre, 2025</h3>
     <ul className={styles.timeline}>

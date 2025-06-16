@@ -2,8 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import styles from './HomeSection.module.css';
-import backgroundImage from '../../assets/Center.png';
-import heroImage from '../../assets/images/hero.jpeg';
+// Images are now served from public/images/
 import Itinerary from './Itinerary';
 
 const HomeSection = () => {
@@ -18,12 +17,12 @@ const HomeSection = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img src={heroImage} alt="Hero" />
+          <img src="/images/hero.jpeg" alt="Hero" />
         </motion.div>
         
         <motion.div 
           className={styles.textContent}
-          style={{ backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url(${backgroundImage})` }}
+          style={{ backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url(/images/Center.png)` }}
         >
           
           <motion.h2

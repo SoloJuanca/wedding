@@ -1,0 +1,9 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="8" fill="#004481"/>
+  <rect x="8" y="12" width="24" height="16" rx="2" fill="white"/>
+  <rect x="10" y="16" width="20" height="2" fill="#004481"/>
+  <rect x="10" y="20" width="12" height="2" fill="#004481"/>
+  <rect x="10" y="24" width="8" height="2" fill="#004481"/>
+  <circle cx="28" r="3" fill="white"/>
+  <text x="20" y="36" text-anchor="middle" fill="white" font-size="6" font-weight="bold">BBVA</text>
+</svg> 

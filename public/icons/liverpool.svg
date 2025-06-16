@@ -1,0 +1,8 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="40" height="40" rx="8" fill="#dc3545"/>
+  <path d="M8 12h24l-2 16H10L8 12z" fill="white"/>
+  <circle cx="15" cy="32" r="2" fill="#dc3545"/>
+  <circle cx="25" cy="32" r="2" fill="#dc3545"/>
+  <path d="M12 8h4v4h-4V8z" fill="white"/>
+  <text x="20" y="22" text-anchor="middle" fill="#dc3545" font-size="6" font-weight="bold">L</text>
+</svg> 

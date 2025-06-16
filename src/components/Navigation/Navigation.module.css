@@ -15,6 +15,14 @@
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   position: relative; /* Initial position */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.nav::-webkit-scrollbar {
+  display: none; /* WebKit */
 }
 
 .nav.sticky {
@@ -30,6 +38,8 @@
   font-size: 1rem;
   cursor: pointer;
   transition: color 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .link:hover {
@@ -45,5 +55,6 @@
   .nav {
     padding: 1rem;
     gap: 1rem;
+    justify-content: flex-start;
   }
 } 

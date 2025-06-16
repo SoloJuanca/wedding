@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import styles from './CountdownSection.module.css';
-import countdownImage from '../../assets/images/countdown.png';
+// Images are now served from public/images/
 
 const CountdownSection = () => {
   const intl = useIntl();
@@ -45,7 +45,7 @@ const CountdownSection = () => {
         transition={{ duration: 0.8 }}
       >
         <img 
-          src={countdownImage} 
+          src="/images/countdown1.png" 
           alt={intl.formatMessage({ id: 'countdown.title' })}
           className={styles.titleImage}
         />

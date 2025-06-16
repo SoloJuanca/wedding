@@ -3,7 +3,7 @@ import styles from './DressCode.module.css';
 
 const Rules = () => {
   return (
-    <div className={styles.dressCodeContainer}>
+    <div id="dresscode" className={styles.dressCodeContainer}>
       <h2 className={styles.title}>Reglas</h2>
       <h3 className={styles.subtitle}>Información importante</h3>
       
@@ -19,7 +19,7 @@ const Rules = () => {
           <div className={styles.icon}>
             <img src="/icons/white.png" alt="No beige, no blanco" />
           </div>
-          <p className={styles.ruleText}>No beige, no blanco</p>
+          <p className={styles.ruleText}>No beige, no blanco, no plata, no amarillo</p>
         </div>
 
         <div className={styles.rule}>
