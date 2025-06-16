@@ -105,7 +105,7 @@ const Admin = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          groupId: parseInt(selectedGroup),
+          groupId: selectedGroup,
           guestId: parseInt(selectedGuest)
         })
       });

@@ -72,7 +72,7 @@ const RSVPPage = () => {
           await fetch('/api/groups/open-invitation', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: parseInt(groupId) })
+            body: JSON.stringify({ id: groupId })
           });
         }
       } else {
@@ -93,7 +93,7 @@ const RSVPPage = () => {
         await fetch('/api/groups/open-invitation', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: parseInt(groupId) })
+          body: JSON.stringify({ id: groupId })
         });
       };
       markAsOpened();
@@ -123,7 +123,7 @@ const RSVPPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id: parseInt(groupId),
+          id: groupId,
           confirmed_invitations: confirmedGuests
         })
       });
@@ -157,7 +157,7 @@ const RSVPPage = () => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id: parseInt(groupId)
+          id: groupId
         })
       });
 

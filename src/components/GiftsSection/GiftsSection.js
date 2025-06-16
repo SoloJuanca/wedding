@@ -26,7 +26,7 @@ const GiftsSection = () => {
   return (
     <div id="gifts" className={styles.giftsContainer}>
       <h2 className={styles.title}>Mesa de Regalos</h2>
-      <h3 className={styles.subtitle}>Tu presencia es nuestro mejor regalo</h3>
+      <h3 className={styles.subtitle}>Su presencia es el mejor regalo... pero si aún así quieren consentirnos, no nos opondremos.</h3>
       
       <div className={styles.optionsContainer}>
         {/* Mesa de Regalos Liverpool */}
