@@ -4,8 +4,9 @@ import styles from './Itinerary.module.css';
 
 const events = [
   { time: '6:00 p.m.', title: 'Boda Civil', icon: '/images/civil.png' },
-  { time: '7:00 p.m.', title: 'Misa', icon: '/images/misa.png' },
-  { time: '8:00 p.m.', title: 'Fiesta', icon: '/images/party.png' },
+  { time: '7:00 p.m.', title: 'Ceremonia Religiosa', icon: '/images/misa.png' },
+  { time: '8:00 p.m.', title: 'Recepción', icon: '/images/party.png' },
+  { time: '2:00 a.m.', title: 'Fin de la recepción', icon: '/images/party.png' },
 ];
 
 const Itinerary = () => (

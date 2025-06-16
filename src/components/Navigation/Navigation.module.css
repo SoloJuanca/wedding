@@ -47,8 +47,11 @@
 }
 
 .link.active {
-  color: #96849C;
+  color: #fff;
+  background-color: #96849C;
   font-weight: 500;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
 }
 
 @media (max-width: 768px) {

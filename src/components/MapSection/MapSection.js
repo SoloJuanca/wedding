@@ -134,7 +134,7 @@ const MapSection = () => {
 
           <div className={styles.mapContainer}>
             <LoadScript 
-              googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+              googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
               onLoad={() => console.log('Google Maps API loaded')}
             >
               <GoogleMap

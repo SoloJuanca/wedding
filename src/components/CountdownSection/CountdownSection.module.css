@@ -11,6 +11,7 @@
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  gap: 3rem;
 }
 
 .section::before {
@@ -25,7 +26,8 @@
 }
 
 .titleContainer,
-.countdownContainer {
+.countdownContainer,
+.calendarSection {
   position: relative;
   z-index: 2;
 }
@@ -97,4 +99,110 @@
   color: #96849C;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* Calendar Section Styles */
+.calendarSection {
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+.calendarTitle {
+  font-family: var(--secondaryFont);
+  font-size: 1.8rem;
+  color: #716283;
+  margin-bottom: 0.5rem;
+}
+
+.calendarSubtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  color: #96849C;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.calendarButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.calendarButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 150px;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendarButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.icsButton {
+  background: linear-gradient(135deg, #96849C, #716283);
+}
+
+.icsButton:hover {
+  background: linear-gradient(135deg, #716283, #5d5170);
+}
+
+.googleButton {
+  background: linear-gradient(135deg, #4285f4, #3367d6);
+}
+
+.googleButton:hover {
+  background: linear-gradient(135deg, #3367d6, #2851b8);
+}
+
+.outlookButton {
+  background: linear-gradient(135deg, #0078d4, #106ebe);
+}
+
+.outlookButton:hover {
+  background: linear-gradient(135deg, #106ebe, #005a9e);
+}
+
+.yahooButton {
+  background: linear-gradient(135deg, #7b68ee, #6a5acd);
+}
+
+.yahooButton:hover {
+  background: linear-gradient(135deg, #6a5acd, #5d4fb8);
+}
+
+@media (max-width: 768px) {
+  .section {
+    gap: 2rem;
+    padding: 3rem 1rem;
+  }
+
+  .calendarTitle {
+    font-size: 1.5rem;
+  }
+
+  .calendarButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .calendarButton {
+    width: 100%;
+    max-width: 250px;
+  }
 } 

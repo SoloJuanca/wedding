@@ -347,7 +347,7 @@ const RSVPPage = () => {
                   )}
                   
                   <p>¡Nos vemos el 25 de octubre de 2025!</p>
-                  <p><strong>Horario:</strong> 6:00 PM - Boda Civil | 7:00 PM - Misa | 8:00 PM - Fiesta</p>
+                  <p><strong>Horario:</strong> 6:00 PM - Boda Civil | 7:00 PM - Ceremonia Religiosa | 8:00 PM - Recepción</p>
                 </div>
               </div>
             ) : group.deny_status ? (
