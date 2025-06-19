@@ -8,18 +8,87 @@ const locations = [
   {
     id: 1,
     type: 'venue',
-    position: { lat: 25.4242, lng: -100.1525 }
+    name: 'Las Nubes - Evento Principal',
+    position: { lat: 25.4242, lng: -100.1525 },
+    link: 'https://maps.app.goo.gl/pdZzouwKoMPhKkTM6'
   },
   {
     id: 2,
     type: 'hotel',
-    position: { lat: 25.4250, lng: -100.1510 }
+    name: 'Holiday Inn Express Monterrey Tecnológico',
+    position: { lat: 25.655, lng: -100.293 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Holiday+Inn+Express+Monterrey+Tecnologico'
   },
   {
     id: 3,
+    type: 'hotel',
+    name: 'Novotel Monterrey Valle',
+    position: { lat: 25.647, lng: -100.324 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Novotel+Monterrey+Valle'
+  },
+  {
+    id: 4,
+    type: 'hotel',
+    name: 'NH Collection Monterrey San Pedro',
+    position: { lat: 25.650, lng: -100.315 },
+    link: 'https://www.google.com/maps/search/?api=1&query=NH+Collection+Monterrey+San+Pedro'
+  },
+  {
+    id: 5,
+    type: 'hotel',
+    name: 'Fiesta Inn Monterrey Valle',
+    position: { lat: 25.646, lng: -100.323 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Fiesta+Inn+Monterrey+Valle'
+  },
+  {
+    id: 6,
     type: 'attraction',
-    position: { lat: 25.4300, lng: -100.1500 }
-  }
+    name: 'Cerro de la Silla',
+    position: { lat: 25.630499, lng: -100.237845 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Cerro+de+la+Silla+Monterrey'
+  },
+  {
+    id: 7,
+    type: 'attraction',
+    name: 'Parque Fundidora',
+    position: { lat: 25.678704, lng: -100.284301 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Parque+Fundidora+Monterrey'
+  },
+  {
+    id: 8,
+    type: 'attraction',
+    name: 'Barbie Dream Lounge – Plaza Áuriga',
+    position: { lat: 25.665000, lng: -100.310000 }, // estimado, no encontré coords públicas
+    link: 'https://www.google.com/maps/search/?api=1&query=Barbie+Dream+Lounge+Plaza+Auriga+Monterrey'
+  },
+  {
+    id: 9,
+    type: 'attraction',
+    name: 'Fashion Drive',
+    position: { lat: 25.656500, lng: -100.382000 }, // zona San Pedro cerca Av Diego Rivera
+    link: 'https://www.google.com/maps/search/?api=1&query=Fashion+Drive+Monterrey'
+  },
+  {
+    id: 10,
+    type: 'attraction',
+    name: 'Sealand Acuarioventura – Galerías Valle Oriente',
+    position: { lat: 25.6383251, lng: -100.3138271 },
+    link: 'https://maps.app.goo.gl/yn8kHPa8PVTYA7DM6'
+  },
+  {
+    id: 11,
+    type: 'attraction',
+    name: 'Cascada Cola de Caballo',
+    position: { lat: 25.362317, lng: -100.163467 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Cola+de+Caballo+Santiago+Nuevo+Leon'
+  },
+  {
+    id: 12,
+    type: 'attraction',
+    name: 'Presa La Boca (Rodrigo Gómez)',
+    position: { lat: 25.4167, lng: -100.1170 },
+    link: 'https://www.google.com/maps/search/?api=1&query=Presa+La+Boca+Santiago+Nuevo+Leon'
+  }  
 ];
 
 const MapSection = () => {
@@ -56,6 +125,12 @@ const MapSection = () => {
     if (map) {
       map.panTo(location.position);
       map.setZoom(15);
+    }
+  };
+
+  const handleDirectionsClick = (location) => {
+    if (location.link) {
+      window.open(location.link, '_blank');
     }
   };
 
@@ -120,12 +195,38 @@ const MapSection = () => {
                     className={`${styles.locationItem} ${selectedLocation?.id === location.id ? styles.active : ''}`}
                     onClick={() => handleLocationClick(location)}
                   >
-                    <div className={styles.locationName}>
-                      {intl.formatMessage({ id: `map.${location.type}.name` })}
+                    <div className={styles.locationInfo}>
+                      <div className={styles.locationName}>
+                        {location.name || intl.formatMessage({ id: `map.${location.type}.name` })}
+                      </div>
+                      {location.type === 'hotel' && (
+                        <div className={styles.locationAddress}>
+                          Hotel en Monterrey, Valle Oriente
+                        </div>
+                      )}
+                      {location.type === 'venue' && (
+                        <div className={styles.locationAddress}>
+                          {intl.formatMessage({ id: `map.${location.type}.address` })}
+                        </div>
+                      )}
+                      {location.type === 'attraction' && (
+                        <div className={styles.locationAddress}>
+                          Atracción turística en Monterrey
+                        </div>
+                      )}
                     </div>
-                    <div className={styles.locationAddress}>
-                      {intl.formatMessage({ id: `map.${location.type}.address` })}
-                    </div>
+                    {location.link && (location.type === 'hotel' || location.type === 'attraction') && (
+                      <button
+                        className={styles.directionsButton}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDirectionsClick(location);
+                        }}
+                        title="Ver en Google Maps"
+                      >
+                        📍
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -162,8 +263,24 @@ const MapSection = () => {
                     onCloseClick={() => setSelectedLocation(null)}
                   >
                     <div className={styles.infoWindowContent}>
-                      <h3>{intl.formatMessage({ id: `map.${selectedLocation.type}.name` })}</h3>
-                      <p>{intl.formatMessage({ id: `map.${selectedLocation.type}.address` })}</p>
+                      <h3>{selectedLocation.name || intl.formatMessage({ id: `map.${selectedLocation.type}.name` })}</h3>
+                      {selectedLocation.type === 'hotel' && (
+                        <p>Hotel en Monterrey, Valle Oriente</p>
+                      )}
+                      {selectedLocation.type === 'venue' && (
+                        <p>{intl.formatMessage({ id: `map.${selectedLocation.type}.address` })}</p>
+                      )}
+                      {selectedLocation.type === 'attraction' && (
+                        <p>Atracción turística en Monterrey</p>
+                      )}
+                      {selectedLocation.link && (selectedLocation.type === 'hotel' || selectedLocation.type === 'attraction') && (
+                        <button
+                          onClick={() => handleDirectionsClick(selectedLocation)}
+                          className={styles.directionsLink}
+                        >
+                          Ver en Google Maps
+                        </button>
+                      )}
                     </div>
                   </InfoWindow>
                 )}

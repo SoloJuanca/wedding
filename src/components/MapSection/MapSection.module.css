@@ -126,14 +126,40 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-height: 600px;
+  overflow: hidden;
 }
 
 .locationGroup {
   display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: calc(100% - 80px); /* Espacio para el título */
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
 .locationGroup.active {
-  display: block;
+  display: flex;
+}
+
+/* Estilos para el scrollbar */
+.locationGroup::-webkit-scrollbar {
+  width: 6px;
+}
+
+.locationGroup::-webkit-scrollbar-track {
+  background: rgba(255, 218, 226, 0.1);
+  border-radius: 3px;
+}
+
+.locationGroup::-webkit-scrollbar-thumb {
+  background: #96849C;
+  border-radius: 3px;
+}
+
+.locationGroup::-webkit-scrollbar-thumb:hover {
+  background: #716283;
 }
 
 .locationGroupTitle {
@@ -153,6 +179,11 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 218, 226, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 70px;
+  flex-shrink: 0;
 }
 
 .locationItem:hover {
@@ -166,6 +197,10 @@
   background-color: #fff;
 }
 
+.locationInfo {
+  flex: 1;
+}
+
 .locationName {
   font-weight: 600;
   color: #716283;
@@ -175,6 +210,42 @@
 .locationAddress {
   font-size: 0.9rem;
   color: #96849C;
+}
+
+.directionsButton {
+  background: #96849C;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.directionsButton:hover {
+  background-color: #716283;
+  transform: scale(1.1);
+}
+
+.directionsLink {
+  background: #96849C;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.directionsLink:hover {
+  background-color: #716283;
 }
 
 @media (max-width: 1024px) {
