@@ -1,12 +1,12 @@
 const pool = require('../../../lib/db.js');
 
-// Change the opened_status to true
+// Change the opened_status to true and save opened_at timestamp
 const openInvitation = async (req, res) => {
     const { id } = req.body;
     try {
         const group = await pool.query(
-            `UPDATE groups SET opened_status = true WHERE id = $1 RETURNING *`,
-            [id]
+            `UPDATE groups SET opened_status = true, opened_at = $1 WHERE id = $2 RETURNING *`,
+            [new Date(), id]
         );
 
         if (!group) {

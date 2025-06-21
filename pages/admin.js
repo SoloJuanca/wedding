@@ -137,6 +137,40 @@ const Admin = () => {
     }
   };
 
+  // Mark as sent
+  const handleMarkAsSent = async (groupId) => {
+    try {
+      const response = await fetch('/api/groups/send-invitation', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: groupId })
+      });
+
+      if (response.ok) {
+        // Update only the specific group in the state instead of reloading all data
+        setGroups(prevGroups => 
+          prevGroups.map(group => 
+            group.id === groupId 
+              ? { ...group, sent_status: true }
+              : group
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Error marking as sent:', error);
+    }
+  };
+
+  // Copy to clipboard function
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      // No alert, silent copy
+    } catch (err) {
+      console.error('Error copying to clipboard:', err);
+    }
+  };
+
   if (loading) {
     return <div className={styles.loading}>Cargando...</div>;
   }
@@ -201,17 +235,30 @@ const Admin = () => {
                 <div key={index} className={styles.groupCard}>
                   <div className={styles.groupHeader}>
                     <h4>{group.name}</h4>
-                    <button 
-                      onClick={() => handleDeleteGroup(group.id)}
-                      className={styles.btnDanger}
-                    >
-                      Eliminar
-                    </button>
+                    <div className={styles.groupActions}>
+                      {!group.sent_status && (
+                        <button 
+                          onClick={() => handleMarkAsSent(group.id)}
+                          className={styles.btnSecondary}
+                        >
+                          Marcar como Enviado
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => handleDeleteGroup(group.id)}
+                        className={styles.btnDanger}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </div>
                   <div className={styles.groupInfo}>
                     <p>Total invitaciones: {group.total_invitations}</p>
                     <p>Confirmadas: {group.confirmed_invitations}</p>
                     <p>Invitados: {group.guests?.length || 0}</p>
+                    {group.opened_at && (
+                      <p>Abierto el: {new Date(group.opened_at).toLocaleString('es-ES')}</p>
+                    )}
                     <div className={styles.statusBadges}>
                       {group.sent_status && <span className={styles.badge}>Enviado</span>}
                       {group.opened_status && <span className={styles.badge}>Abierto</span>}
@@ -230,8 +277,7 @@ const Admin = () => {
                         <button 
                           onClick={() => {
                             const link = `${window.location.origin}/rsvp/2/${group.id}`;
-                            navigator.clipboard.writeText(link);
-                            alert('Enlace copiado al portapapeles');
+                            copyToClipboard(link);
                           }}
                           className={styles.copyBtn}
                         >

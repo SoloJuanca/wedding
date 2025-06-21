@@ -144,6 +144,23 @@
   cursor: not-allowed;
 }
 
+.btnSecondary {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+}
+
+.btnSecondary:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
 .btnDanger {
   background: #dc3545;
   color: white;
@@ -189,6 +206,12 @@
   font-family: var(--secondaryFont);
   font-size: 1.25rem;
   margin: 0;
+}
+
+.groupActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .groupInfo {

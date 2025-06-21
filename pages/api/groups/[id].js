@@ -24,8 +24,8 @@ const getGroup = async (req, res) => {
         // Marcar la invitación como abierta si no lo está ya
         if (!group.rows[0].opened_status) {
             await pool.query(
-                `UPDATE groups SET opened_status = true WHERE id = $1`,
-                [id]
+                `UPDATE groups SET opened_status = true, opened_at = $1 WHERE id = $2`,
+                [new Date(), id]
             );
         }
 
