@@ -43,6 +43,7 @@ const RSVPPage = () => {
   const [saveOnOpen, setSaveOnOpen] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [playAudio, setPlayAudio] = useState(false);
+  const [audioFallback, setAudioFallback] = useState(false);
 
   // URL del video de YouTube
   const youtubeUrl = 'https://youtu.be/rF5tJ8xuaIc?t=22';
@@ -187,8 +188,35 @@ const RSVPPage = () => {
     setIsOpening(true);
     setSaveOnOpen(true);
     
+    // Intentar reproducir audio inmediatamente después del click del usuario (iOS requirement)
+    try {
+      // Crear un contexto de audio si no existe
+      if (typeof window !== 'undefined' && window.AudioContext) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      }
+    } catch (e) {
+      console.log('AudioContext not available:', e);
+    }
+    
     // Iniciar reproducción del audio de YouTube
     setPlayAudio(true);
+    
+    // Si hay problemas con iOS, activar fallback después de un tiempo
+    setTimeout(() => {
+      if (!audioFallback) {
+        // Detectar si es iOS/Safari
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (isIOS || isSafari) {
+          console.log('Dispositivo iOS/Safari detectado, usando fallback');
+          setAudioFallback(true);
+        }
+      }
+    }, 1000);
     
     // Después de 2.5 segundos, ocultar la carta y mostrar el contenido
     setTimeout(() => {
@@ -269,16 +297,53 @@ const RSVPPage = () => {
       {/* ReactPlayer para reproducir audio de YouTube */}
       <ReactPlayer 
         url={youtubeUrl} 
-        playing={playAudio} 
+        playing={playAudio && !audioFallback} 
         width='0' 
         height='0'
         volume={0.7}
+        muted={false}
+        playsinline={true}
         config={{
           youtube: {
-            playerVars: { showinfo: 0 }
+            playerVars: { 
+              showinfo: 0,
+              controls: 0,
+              autoplay: 1,
+              playsinline: 1,
+              rel: 0,
+              iv_load_policy: 3
+            }
           }
         }}
+        onReady={() => {
+          // Intentar reproducir cuando esté listo
+          if (playAudio) {
+            setPlayAudio(false);
+            setTimeout(() => setPlayAudio(true), 100);
+          }
+        }}
+        onError={(error) => {
+          console.log('Error reproduciendo audio YouTube, usando fallback:', error);
+          setAudioFallback(true);
+        }}
       />
+
+      {/* Audio fallback para iOS si YouTube falla */}
+      {audioFallback && (
+        <audio 
+          ref={(audio) => {
+            if (audio && playAudio) {
+              audio.currentTime = 22; // Empezar en el segundo 22
+              audio.volume = 0.7;
+              audio.play().catch(e => console.log('Error reproduciendo audio fallback:', e));
+            }
+          }}
+          style={{ display: 'none' }}
+          preload="auto"
+        >
+          <source src="https://www.youtube.com/watch?v=rF5tJ8xuaIc" type="audio/mpeg" />
+        </audio>
+      )}
 
       {/* Animación de carta que se muestra primero */}
       <div 
@@ -286,7 +351,7 @@ const RSVPPage = () => {
         onClick={handleLetterClick}
       >
         <p className={styles.title}>Te invitamos a...</p>
-        <p className={styles.helper}>Clickeame</p>
+        <p className={styles.helper}>(Abre el sobre)</p>
         <div className={styles.animatedMail}>
           <div className={styles.backFold}></div>
           <div className={styles.letter}>
