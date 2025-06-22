@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import HomeSection from '../src/components/HomeSection/HomeSection';
 import CountdownSection from '../src/components/CountdownSection/CountdownSection';
 import MapSection from '../src/components/MapSection/MapSection';
@@ -27,7 +28,35 @@ const ShapeDividerBottom = () => (
 
 const ExamplePage = () => {
   return (
-    <div className={styles.page}>
+    <>
+      <Head>
+        <title>Boda de Mer y Juan | 25 de octubre del 2025</title>
+        <meta name="description" content="Te invitamos a celebrar nuestra boda. ¡Acompáñanos en este día tan especial!" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://meryjuan.dingerbites.com/" />
+        <meta property="og:title" content="Boda de Mer y Juan | 25 de octubre del 2025" />
+        <meta property="og:description" content="Te invitamos a celebrar nuestra boda. ¡Acompáñanos en este día tan especial!" />
+        <meta property="og:image" content="https://meryjuan.dingerbites.com/images/icon.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Boda de Mer y Juan" />
+        <meta property="og:locale" content="es_ES" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://meryjuan.dingerbites.com/" />
+        <meta property="twitter:title" content="Boda de Mer y Juan | 25 de octubre del 2025" />
+        <meta property="twitter:description" content="Te invitamos a celebrar nuestra boda. ¡Acompáñanos en este día tan especial!" />
+        <meta property="twitter:image" content="https://meryjuan.dingerbites.com/images/icon.jpg" />
+        
+        {/* Link canonical */}
+        <link rel="canonical" href="https://meryjuan.dingerbites.com/" />
+      </Head>
+      
+      <div className={styles.page}>
       <HomeSection />
       <Navigation />
       <CountdownSection />
@@ -56,7 +85,8 @@ const ExamplePage = () => {
       </div>
       <GiftsSection />
 
-    </div>
+      </div>
+    </>
   );
 };
 

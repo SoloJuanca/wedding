@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import Image from 'next/image';
 import ReactPlayer from 'react-player';
 import HomeSection from '../../../src/components/HomeSection/HomeSection';
@@ -236,7 +237,35 @@ const RSVPPage = () => {
 
   // Siempre mostrar la página completa, solo cambiar la sección RSVP según el estado
   return (
-    <div className={homeStyles.page}>
+    <>
+      <Head>
+        <title>Boda de Mer y Juan | 25 de octubre del 2025</title>
+        <meta name="description" content={`Te invitamos a celebrar nuestra boda. Confirmación para ${group.name} - ¡Acompáñanos en este día tan especial!`} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://meryjuan.dingerbites.com/rsvp/${eventId}/${groupId}`} />
+        <meta property="og:title" content="Boda de Mer y Juan | 25 de octubre del 2025" />
+        <meta property="og:description" content={`Te invitamos a celebrar nuestra boda. Confirmación para ${group.name} - ¡Acompáñanos en este día tan especial!`} />
+        <meta property="og:image" content="https://meryjuan.dingerbites.com/images/icon.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Boda de Mer y Juan" />
+        <meta property="og:locale" content="es_ES" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={`https://meryjuan.dingerbites.com/rsvp/${eventId}/${groupId}`} />
+        <meta property="twitter:title" content="Boda de Mer y Juan | 25 de octubre del 2025" />
+        <meta property="twitter:description" content={`Te invitamos a celebrar nuestra boda. Confirmación para ${group.name} - ¡Acompáñanos en este día tan especial!`} />
+        <meta property="twitter:image" content="https://meryjuan.dingerbites.com/images/icon.jpg" />
+        
+        {/* Link canonical */}
+        <link rel="canonical" href={`https://meryjuan.dingerbites.com/rsvp/${eventId}/${groupId}`} />
+      </Head>
+      
+      <div className={homeStyles.page}>
       {/* ReactPlayer para reproducir audio de YouTube */}
       <ReactPlayer 
         url={youtubeUrl} 
@@ -462,7 +491,8 @@ const RSVPPage = () => {
           </div>
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
