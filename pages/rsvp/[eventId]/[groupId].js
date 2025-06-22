@@ -240,14 +240,14 @@ const RSVPPage = () => {
     <>
       <Head>
         <title>Boda de Mer y Juan | 25 de octubre del 2025</title>
-        <meta name="description" content={`Te invitamos a celebrar nuestra boda. Confirmación para ${group.name} - ¡Acompáñanos en este día tan especial!`} />
+        <meta name="description" content="🎉 ¡Ya casi comienza nuestra pato-aventura! 🦆💛 Después de tanto planear, soñar y reír... ¡nos casamos! 💍 Queremos que seas parte de este día tan especial para nosotros. Tu presencia haría nuestra celebración aún más bonita 🌷✨ 📅 25-10-25 📍 Las Nubes, Santiago, Nuevo León" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://meryjuan.dingerbites.com/rsvp/${eventId}/${groupId}`} />
         <meta property="og:title" content="Boda de Mer y Juan | 25 de octubre del 2025" />
-        <meta property="og:description" content={`Te invitamos a celebrar nuestra boda. Confirmación para ${group.name} - ¡Acompáñanos en este día tan especial!`} />
+        <meta property="og:description" content="🎉 ¡Ya casi comienza nuestra pato-aventura! 🦆💛 Después de tanto planear, soñar y reír... ¡nos casamos! 💍 Queremos que seas parte de este día tan especial para nosotros. Tu presencia haría nuestra celebración aún más bonita 🌷✨ 📅 25-10-25 📍 Las Nubes, Santiago, Nuevo León" />
         <meta property="og:image" content="https://meryjuan.dingerbites.com/images/icon.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -258,7 +258,7 @@ const RSVPPage = () => {
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={`https://meryjuan.dingerbites.com/rsvp/${eventId}/${groupId}`} />
         <meta property="twitter:title" content="Boda de Mer y Juan | 25 de octubre del 2025" />
-        <meta property="twitter:description" content={`Te invitamos a celebrar nuestra boda. Confirmación para ${group.name} - ¡Acompáñanos en este día tan especial!`} />
+        <meta property="twitter:description" content="🎉 ¡Ya casi comienza nuestra pato-aventura! 🦆💛 Después de tanto planear, soñar y reír... ¡nos casamos! 💍 Queremos que seas parte de este día tan especial para nosotros. Tu presencia haría nuestra celebración aún más bonita 🌷✨ 📅 25-10-25 📍 Las Nubes, Santiago, Nuevo León" />
         <meta property="twitter:image" content="https://meryjuan.dingerbites.com/images/icon.jpg" />
         
         {/* Link canonical */}

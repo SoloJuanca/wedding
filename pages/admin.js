@@ -277,11 +277,22 @@ const Admin = () => {
                         <button 
                           onClick={() => {
                             const link = `${window.location.origin}/rsvp/2/${group.id}`;
-                            copyToClipboard(link);
+                            const fullMessage = `🎉 ¡Ya casi comienza nuestra pato-aventura! 🦆💛
+Después de tanto planear, soñar y reír... ¡nos casamos! 💍
+
+Queremos que seas parte de este día tan especial para nosotros.
+Tu presencia haría nuestra celebración aún más bonita 🌷✨
+
+📅 25 - 10 - 25
+📍 Las Nubes, Santiago, Nuevo León
+
+💌 Aquí te dejamos la invitación con todos los detalles y para confirmar asistencia:
+${link}`;
+                            copyToClipboard(fullMessage);
                           }}
                           className={styles.copyBtn}
                         >
-                          Copiar
+                          Copiar Invitación
                         </button>
                       </div>
                     </div>
