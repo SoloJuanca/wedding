@@ -11,7 +11,7 @@ export default function Document() {
           name="description"
           content="Boda de Mer y Juan | 25 de octubre del 2025"
         />
-        <link rel="apple-touch-icon" href="/logo192.png" />
+        <link rel="apple-touch-icon" href="/images/icon.jpg" />
         <link rel="manifest" href="/manifest.json" />
         
         {/* Open Graph / Facebook */}
