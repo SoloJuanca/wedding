@@ -20,7 +20,15 @@ const Admin = () => {
   const [newGuest, setNewGuest] = useState({ name: '', email: '', phone: '' });
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedGuest, setSelectedGuest] = useState('');
-    console.log("groups", groups);
+  
+  // Edit and modal states
+  const [editingGroup, setEditingGroup] = useState(null);
+  const [editForm, setEditForm] = useState({ name: '', total_invitations: '' });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [groupToDelete, setGroupToDelete] = useState(null);
+  
+  console.log("groups", groups);
+  
   // Load data
   useEffect(() => {
     loadData();
@@ -129,8 +137,21 @@ const Admin = () => {
 
   // Delete group
   const handleDeleteGroup = async (groupId) => {
-    if (!confirm('¿Estás seguro de eliminar este grupo?')) return;
+    const group = groups.find(g => g.id === groupId);
+    
+    // Si ya se envió la invitación, mostrar modal
+    if (group && group.sent_status) {
+      setGroupToDelete(group);
+      setShowDeleteModal(true);
+      return;
+    }
 
+    // Si no se ha enviado, eliminar directamente
+    await deleteGroup(groupId);
+  };
+
+  // Función para eliminar grupo
+  const deleteGroup = async (groupId) => {
     try {
       const response = await fetch(`/api/groups/${groupId}`, {
         method: 'DELETE'
@@ -138,9 +159,62 @@ const Admin = () => {
 
       if (response.ok) {
         loadData();
+        setShowDeleteModal(false);
+        setGroupToDelete(null);
       }
     } catch (error) {
       console.error('Error deleting group:', error);
+    }
+  };
+
+  // Iniciar edición de grupo
+  const handleEditGroup = (group) => {
+    // Si ya se está editando otro grupo, cancelar primero
+    if (editingGroup && editingGroup !== group.id) {
+      setEditingGroup(null);
+      setEditForm({ name: '', total_invitations: '' });
+    }
+    
+    setEditingGroup(group.id);
+    setEditForm({
+      name: group.name,
+      total_invitations: group.total_invitations.toString()
+    });
+  };
+
+  // Cancelar edición
+  const handleCancelEdit = () => {
+    setEditingGroup(null);
+    setEditForm({ name: '', total_invitations: '' });
+  };
+
+  // Guardar cambios del grupo
+  const handleSaveGroup = async () => {
+    if (!editForm.name || !editForm.total_invitations) return;
+
+    try {
+      // Obtener el grupo actual para preservar confirmed_invitations
+      const currentGroup = groups.find(g => g.id === editingGroup);
+      
+      const response = await fetch(`/api/groups/${editingGroup}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          group: {
+            name: editForm.name,
+            total_invitations: parseInt(editForm.total_invitations),
+            confirmed_invitations: currentGroup?.confirmed_invitations || 0
+          }
+        })
+      });
+
+      if (response.ok) {
+        setEditingGroup(null);
+        setEditForm({ name: '', total_invitations: '' });
+        loadData();
+      }
+    } catch (error) {
+      console.error('Error updating group:', error);
     }
   };
 
@@ -334,8 +408,51 @@ const Admin = () => {
               {filteredGroups.map((group, index) => (
                 <div key={index} className={styles.groupCard}>
                   <div className={styles.groupHeader}>
-                    <h4>{group.name}</h4>
+                    {editingGroup === group.id ? (
+                      <div className={styles.editForm}>
+                        <div className={styles.formGroup}>
+                          <input
+                            type="text"
+                            placeholder="Nombre del grupo"
+                            value={editForm.name}
+                            onChange={(e) => setEditForm({...editForm, name: e.target.value})}
+                          />
+                        </div>
+                        <div className={styles.formGroup}>
+                          <input
+                            type="number"
+                            placeholder="Total de invitaciones"
+                            value={editForm.total_invitations}
+                            onChange={(e) => setEditForm({...editForm, total_invitations: e.target.value})}
+                          />
+                        </div>
+                        <div className={styles.editFormActions}>
+                          <button 
+                            onClick={handleSaveGroup}
+                            className={styles.btnSave}
+                          >
+                            Guardar
+                          </button>
+                          <button 
+                            onClick={handleCancelEdit}
+                            className={styles.btnCancel}
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <h4>{group.name}</h4>
+                    )}
                     <div className={styles.groupActions}>
+                      {editingGroup !== group.id && (
+                        <button 
+                          onClick={() => handleEditGroup(group)}
+                          className={styles.btnEdit}
+                        >
+                          Editar
+                        </button>
+                      )}
                       {!group.sent_status && (
                         <button 
                           onClick={() => handleMarkAsSent(group.id)}
@@ -569,6 +686,37 @@ ${link}`;
           </div>
         )}
       </main>
+
+      {/* Modal de confirmación para eliminar */}
+      {showDeleteModal && groupToDelete && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h3>Confirmar Eliminación</h3>
+            <p>
+              El grupo <strong>"{groupToDelete.name}"</strong> ya tiene invitaciones enviadas.
+              <br /><br />
+              ¿Estás seguro de que quieres eliminarlo? Esta acción no se puede deshacer y podría afectar a los invitados que ya recibieron la invitación.
+            </p>
+            <div className={styles.modalActions}>
+              <button 
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setGroupToDelete(null);
+                }}
+                className={styles.btnCancel}
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={() => deleteGroup(groupToDelete.id)}
+                className={styles.btnDanger}
+              >
+                Eliminar de todas formas
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
