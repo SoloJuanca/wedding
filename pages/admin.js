@@ -8,6 +8,13 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('groups');
   
+  // Filter states
+  const [filters, setFilters] = useState({
+    sent: 'all', // 'all', 'sent', 'not_sent'
+    confirmed: 'all', // 'all', 'confirmed', 'not_confirmed'
+    opened: 'all' // 'all', 'opened', 'not_opened'
+  });
+  
   // Form states
   const [newGroup, setNewGroup] = useState({ name: '', total_invitations: '' });
   const [newGuest, setNewGuest] = useState({ name: '', email: '', phone: '' });
@@ -171,6 +178,40 @@ const Admin = () => {
     }
   };
 
+  // Filter groups based on current filters
+  const filteredGroups = groups.filter(group => {
+    // Filter by sent status
+    if (filters.sent === 'sent' && !group.sent_status) return false;
+    if (filters.sent === 'not_sent' && group.sent_status) return false;
+    
+    // Filter by confirmed status
+    if (filters.confirmed === 'confirmed' && !group.confirmed_status) return false;
+    if (filters.confirmed === 'not_confirmed' && group.confirmed_status) return false;
+    
+    // Filter by opened status
+    if (filters.opened === 'opened' && !group.opened_status) return false;
+    if (filters.opened === 'not_opened' && group.opened_status) return false;
+    
+    return true;
+  });
+
+  // Handle filter changes
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: value
+    }));
+  };
+
+  // Reset filters
+  const resetFilters = () => {
+    setFilters({
+      sent: 'all',
+      confirmed: 'all',
+      opened: 'all'
+    });
+  };
+
   if (loading) {
     return <div className={styles.loading}>Cargando...</div>;
   }
@@ -229,9 +270,68 @@ const Admin = () => {
               </div>
             </form>
 
+            {/* Filter Controls */}
+            <div className={styles.filtersSection}>
+              <h3>Filtros</h3>
+              <div className={styles.filtersContainer}>
+                <div className={styles.filterGroup}>
+                  <label>Estado de Envío:</label>
+                  <select 
+                    value={filters.sent} 
+                    onChange={(e) => handleFilterChange('sent', e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">Todos</option>
+                    <option value="sent">Enviados</option>
+                    <option value="not_sent">No Enviados</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label>Estado de Confirmación:</label>
+                  <select 
+                    value={filters.confirmed} 
+                    onChange={(e) => handleFilterChange('confirmed', e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">Todos</option>
+                    <option value="confirmed">Confirmados</option>
+                    <option value="not_confirmed">No Confirmados</option>
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label>Estado de Apertura:</label>
+                  <select 
+                    value={filters.opened} 
+                    onChange={(e) => handleFilterChange('opened', e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    <option value="all">Todos</option>
+                    <option value="opened">Abiertos</option>
+                    <option value="not_opened">No Abiertos</option>
+                  </select>
+                </div>
+
+                <button 
+                  onClick={resetFilters}
+                  className={styles.resetFiltersBtn}
+                >
+                  Limpiar Filtros
+                </button>
+              </div>
+            </div>
+
             <div className={styles.groupsList}>
-              <h3>Grupos Existentes ({groups.length})</h3>
-              {groups.map((group, index) => (
+              <h3>
+                Grupos Existentes ({filteredGroups.length} de {groups.length})
+                {filteredGroups.length !== groups.length && (
+                  <span className={styles.filterIndicator}>
+                    - Filtrados
+                  </span>
+                )}
+              </h3>
+              {filteredGroups.map((group, index) => (
                 <div key={index} className={styles.groupCard}>
                   <div className={styles.groupHeader}>
                     <h4>{group.name}</h4>
@@ -415,8 +515,14 @@ ${link}`;
                   <span className={styles.statLabel}>Grupos</span>
                 </div>
                 <div className={styles.stat}>
-                  <span className={styles.statNumber}>{guests.length}</span>
+                  <span className={styles.statNumber}>
+                    {groups.reduce((acc, group) => acc + (group.total_invitations || 0), 0)}
+                  </span>
                   <span className={styles.statLabel}>Total Invitados</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>{guests.length}</span>
+                  <span className={styles.statLabel}>Invitados Registrados</span>
                 </div>
                 <div className={styles.stat}>
                   <span className={styles.statNumber}>{unassignedGuests.length}</span>
@@ -424,9 +530,39 @@ ${link}`;
                 </div>
                 <div className={styles.stat}>
                   <span className={styles.statNumber}>
+                    {groups.filter(group => group.confirmed_status).length}
+                  </span>
+                  <span className={styles.statLabel}>Grupos Confirmados</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>
                     {groups.reduce((acc, group) => acc + (group.confirmed_invitations || 0), 0)}
                   </span>
-                  <span className={styles.statLabel}>Confirmados</span>
+                  <span className={styles.statLabel}>Invitados Confirmados</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>
+                    {groups.filter(group => group.sent_status).reduce((acc, group) => acc + (group.guests?.length || 0), 0)}
+                  </span>
+                  <span className={styles.statLabel}>Invitados Enviados</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>
+                    {groups.filter(group => group.opened_status).length}
+                  </span>
+                  <span className={styles.statLabel}>Grupos Abiertos</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>
+                    {groups.filter(group => group.deny_status).length}
+                  </span>
+                  <span className={styles.statLabel}>Grupos Rechazados</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statNumber}>
+                    {groups.filter(group => group.sent_status && !group.confirmed_status && !group.deny_status).reduce((acc, group) => acc + (group.guests?.length || 0), 0)}
+                  </span>
+                  <span className={styles.statLabel}>Invitados Pendientes</span>
                 </div>
               </div>
             </div>
