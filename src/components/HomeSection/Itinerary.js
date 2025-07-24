@@ -1,18 +1,22 @@
 import React from 'react';
+import { useLanguage } from '../../contexts/LanguageContext';
 import styles from './Itinerary.module.css';
 // Images are now served from public/images/
 
-const events = [
-  { time: '6:00 p.m.', title: 'Boda Civil', icon: '/images/civil.png' },
-  { time: '7:00 p.m.', title: 'Ceremonia Religiosa', icon: '/images/misa.png' },
-  { time: '8:00 p.m.', title: 'Recepción', icon: '/images/party.png' },
-  { time: '2:00 a.m.', title: 'Fin de la recepción', icon: '/images/party.png' },
-];
+const Itinerary = () => {
+  const { messages } = useLanguage();
 
-const Itinerary = () => (
+  const events = [
+    { time: messages['itinerary.time.6pm'], title: messages['itinerary.civilWedding'], icon: '/images/civil.png' },
+    { time: messages['itinerary.time.7pm'], title: messages['itinerary.religiousCeremony'], icon: '/images/misa.png' },
+    { time: messages['itinerary.time.8pm'], title: messages['itinerary.reception'], icon: '/images/party.png' },
+    { time: messages['itinerary.time.2am'], title: messages['itinerary.endReception'], icon: '/images/party.png' },
+  ];
+
+  return (
   <div id="itinerary" className={styles.itineraryContainer}>
-    <h2 className={styles.title}>Itinerario</h2>
-    <h3 className={styles.subtitle}>Sábado 25 de Octubre, 2025</h3>
+      <h2 className={styles.title}>{messages['itinerary.title']}</h2>
+      <h3 className={styles.subtitle}>{messages['itinerary.date']}</h3>
     <ul className={styles.timeline}>
       {events.map((event, idx) => (
         <li
@@ -48,8 +52,9 @@ const Itinerary = () => (
           )}
         </li>
       ))}
-    </ul>
-  </div>
-);
+      </ul>
+    </div>
+  );
+};
 
 export default Itinerary; 

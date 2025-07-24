@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-scroll';
+import { useLanguage } from '../../contexts/LanguageContext';
 import styles from './Navigation.module.css';
 
 const Navigation = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const navRef = useRef(null);
+  const { messages } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,13 +69,13 @@ const Navigation = () => {
   }, [activeSection]);
 
   const navItems = [
-    { to: 'home', label: 'Inicio' },
-    { to: 'countdown', label: 'Cuenta Regresiva' },
-    { to: 'location', label: 'Ubicación' },
-    { to: 'itinerary', label: 'Itinerario' },
-    { to: 'dresscode', label: 'Código Vestimenta' },
-    { to: 'gifts', label: 'Regalos' },
-    { to: 'rsvp', label: 'RSVP' }
+    { to: 'home', label: messages['nav.home'] },
+    { to: 'countdown', label: messages['nav.countdown'] },
+    { to: 'location', label: messages['nav.location'] },
+    { to: 'itinerary', label: messages['nav.itinerary'] },
+    { to: 'dresscode', label: messages['nav.dresscode'] },
+    { to: 'gifts', label: messages['nav.gifts'] },
+    { to: 'rsvp', label: messages['nav.rsvp'] }
   ];
 
   const handleLinkClick = (section) => {

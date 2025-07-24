@@ -10,6 +10,7 @@ import Navigation from '../../../src/components/Navigation/Navigation';
 import Itinerary from '../../../src/components/HomeSection/Itinerary';
 import DressCode from '../../../src/components/DressCode/DressCode';
 import GiftsSection from '../../../src/components/GiftsSection/GiftsSection';
+import { useLanguage } from '../../../src/contexts/LanguageContext';
 import styles from '../../../styles/RSVP.module.css';
 import homeStyles from '../../../styles/Home.module.css';
 
@@ -32,6 +33,7 @@ const ShapeDividerBottom = () => (
 const RSVPPage = () => {
   const router = useRouter();
   const { eventId, groupId } = router.query;
+  const { messages } = useLanguage();
   
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +66,7 @@ const RSVPPage = () => {
       if (response.ok) {
         // Verificar que el grupo pertenece al evento correcto
         if (data.event_id !== parseInt(eventId)) {
-          setError('Invitación no válida para este evento');
+          setError(messages['rsvp.invalidInvitation']);
           return;
         }
         setGroup(data);
@@ -78,11 +80,11 @@ const RSVPPage = () => {
           });
         }
       } else {
-        setError('Invitación no encontrada');
+        setError(messages['rsvp.invitationNotFound']);
       }
     } catch (error) {
       console.error('Error loading group:', error);
-      setError('Error al cargar la invitación');
+      setError(messages['rsvp.errorLoading']);
     } finally {
       setLoading(false);
     }
@@ -140,11 +142,11 @@ const RSVPPage = () => {
           confirmed_invitations: confirmedGuests
         }));
       } else {
-        setError('Error al confirmar la invitación');
+        setError(messages['rsvp.errorConfirming']);
       }
     } catch (error) {
       console.error('Error confirming:', error);
-      setError('Error al confirmar la invitación');
+      setError(messages['rsvp.errorConfirming']);
     } finally {
       setIsSubmitting(false);
     }
@@ -172,11 +174,11 @@ const RSVPPage = () => {
           confirmed_status: false
         }));
       } else {
-        setError('Error al rechazar la invitación');
+        setError(messages['rsvp.errorDenying']);
       }
     } catch (error) {
       console.error('Error denying:', error);
-      setError('Error al rechazar la invitación');
+      setError(messages['rsvp.errorDenying']);
     } finally {
       setIsSubmitting(false);
     }
@@ -230,7 +232,7 @@ const RSVPPage = () => {
       <div className={styles.container}>
         <div className={styles.loading}>
           <div className={styles.spinner}></div>
-          <p>Cargando invitación...</p>
+          <p>{messages['rsvp.loading']}</p>
         </div>
       </div>
     );
@@ -240,10 +242,10 @@ const RSVPPage = () => {
     return (
       <div className={styles.container}>
         <div className={styles.error}>
-          <h2>Error</h2>
+          <h2>{messages['rsvp.error']}</h2>
           <p>{error}</p>
           <button onClick={() => router.push('/')} className={styles.button}>
-            Volver al Inicio
+            {messages['rsvp.backToHome']}
           </button>
         </div>
       </div>
@@ -254,9 +256,9 @@ const RSVPPage = () => {
     return (
       <div className={styles.container}>
         <div className={styles.error}>
-          <h2>Invitación no encontrada</h2>
+          <h2>{messages['rsvp.invitationNotFound']}</h2>
           <button onClick={() => router.push('/')} className={styles.button}>
-            Volver al Inicio
+            {messages['rsvp.backToHome']}
           </button>
         </div>
       </div>
@@ -350,8 +352,8 @@ const RSVPPage = () => {
         className={`${styles.letterImage} ${open ? styles.hide : ''} ${isOpening ? styles.opening : ''}`}
         onClick={handleLetterClick}
       >
-        <p className={styles.title}>Te invitamos a...</p>
-        <p className={styles.helper}>(Abre el sobre)</p>
+        <p className={styles.title}>{messages['rsvp.invitation.title']}</p>
+        <p className={styles.helper}>{messages['rsvp.invitation.helper']}</p>
         <div className={styles.animatedMail}>
           <div className={styles.backFold}></div>
           <div className={styles.letter}>
@@ -367,7 +369,7 @@ const RSVPPage = () => {
             </div>
             <div className={styles.letterTitle}></div>
             <div className={styles.letterContext}></div>
-            <div className={styles.letterContextBody}>A nuestra boda</div>
+            <div className={styles.letterContextBody}>{messages['rsvp.invitation.toWedding']}</div>
             <div className={styles.letterStamp}></div>
           </div>
           <div className={styles.topFold}></div>
@@ -416,7 +418,7 @@ const RSVPPage = () => {
           
           {/* Sección RSVP al final - cambia según el estado */}
           <div id="rsvp" className={styles.rsvpContainer}>
-            <h2 className={styles.title}>RSVP - Confirmación de Asistencia</h2>
+            <h2 className={styles.title}>{messages['rsvp.title']}</h2>
             
             {/* Si ya está confirmado */}
             {group.confirmed_status ? (
@@ -425,13 +427,13 @@ const RSVPPage = () => {
                   <div className={styles.checkmark}>
                     <img src="/images/confirm.png" alt="Confirmado" />
                   </div>
-                  <h3>¡Confirmación Recibida!</h3>
-                  <p><strong>Grupo:</strong> {group.name}</p>
-                  <p><strong>Personas confirmadas:</strong> {group.confirmed_invitations} de {group.total_invitations}</p>
+                  <h3>{messages['rsvp.confirmReceived']}</h3>
+                  <p><strong>{messages['rsvp.group']}:</strong> {group.name}</p>
+                  <p><strong>{messages['rsvp.confirmedPeople']}:</strong> {group.confirmed_invitations} {messages['rsvp.of']} {group.total_invitations}</p>
                   
                   {group.guests && group.guests.length > 0 && (
                     <div className={styles.guestsList}>
-                      <p><strong>Invitados del grupo:</strong></p>
+                      <p><strong>{messages['rsvp.groupGuests']}</strong></p>
                       <div className={styles.guestsGrid}>
                         {group.guests.map(guest => (
                           <span key={guest.id} className={styles.guestTag}>{guest.name}</span>
@@ -440,8 +442,8 @@ const RSVPPage = () => {
                     </div>
                   )}
                   
-                  <p>¡Nos vemos el 25 de octubre de 2025!</p>
-                  <p><strong>Horario:</strong> 6:00 PM - Boda Civil | 7:00 PM - Ceremonia Religiosa | 8:00 PM - Recepción</p>
+                  <p>{messages['rsvp.seeYouThere']}</p>
+                  <p><strong>{messages['rsvp.schedule']}</strong></p>
                 </div>
               </div>
             ) : group.deny_status ? (
@@ -451,25 +453,25 @@ const RSVPPage = () => {
                   <div className={styles.checkmark}>
                     <img src="/images/deny.png" alt="Rechazado" />
                   </div>
-                  <h3>Invitación Rechazada</h3>
-                  <p><strong>Grupo:</strong> {group.name}</p>
-                  <p>Lamentamos que no puedan acompañarnos en este día tan especial.</p>
-                  <p>¡Esperamos verlos en otra ocasión!</p>
+                  <h3>{messages['rsvp.invitationDenied']}</h3>
+                  <p><strong>{messages['rsvp.group']}:</strong> {group.name}</p>
+                  <p>{messages['rsvp.sorryCannotAttend']}</p>
+                  <p>{messages['rsvp.hopeSeeYouNext']}</p>
                 </div>
               </div>
             ) : (
               /* Si no está respondido, mostrar formulario */
               <>
-                <h3 className={styles.subtitle}>Por favor confirma tu asistencia</h3>
+                <h3 className={styles.subtitle}>{messages['rsvp.pleaseConfirm']}</h3>
                 
                 <div className={styles.groupInfo}>
                   <div className={styles.groupCard}>
-                    <h4>Grupo: {group.name}</h4>
-                    <p>Invitación para hasta {group.total_invitations} {group.total_invitations === 1 ? 'persona' : 'personas'}</p>
+                    <h4>{messages['rsvp.group']}: {group.name}</h4>
+                    <p>{messages['rsvp.invitationFor']} {group.total_invitations} {group.total_invitations === 1 ? messages['rsvp.person'] : messages['rsvp.people']}</p>
                     
                     {group.guests && group.guests.length > 0 && (
                       <div className={styles.guestsList}>
-                        <strong>Invitados:</strong>
+                        <strong>{messages['rsvp.guests']}</strong>
                         <div className={styles.guestsGrid}>
                           {group.guests.map(guest => (
                             <span key={guest.id} className={styles.guestTag}>{guest.name}</span>
@@ -485,15 +487,15 @@ const RSVPPage = () => {
                     <div className={styles.checkmark}>
                       <img src="/images/confirm.png" alt="Confirmado" />
                     </div>
-                    <h3>¡Respuesta Enviada!</h3>
-                    <p>Gracias por confirmar tu asistencia. Nos vemos en la celebración.</p>
+                    <h3>{messages['rsvp.responseSent']}</h3>
+                    <p>{messages['rsvp.thankYouConfirm']}</p>
                   </div>
                 ) : (
                   <div className={styles.rsvpForm}>
-                    <h4>¿Podrán acompañarnos?</h4>
+                    <h4>{messages['rsvp.canYouJoin']}</h4>
                     
                     <div className={styles.counterSection}>
-                      <label htmlFor="guestCount">Número de personas que asistirán:</label>
+                                              <label htmlFor="guestCount">{messages['rsvp.numberOfPeople']}</label>
                       <div className={styles.counter}>
                         <button 
                           type="button"
@@ -527,8 +529,8 @@ const RSVPPage = () => {
                           +
                         </button>
                       </div>
-                      <p className={styles.helperText}>
-                        Mínimo 1, máximo {group.total_invitations} personas
+                                              <p className={styles.helperText}>
+                        {messages['rsvp.minimum']} 1, {messages['rsvp.maximum']} {group.total_invitations} {messages['rsvp.people']}
                       </p>
                     </div>
 
@@ -538,7 +540,7 @@ const RSVPPage = () => {
                         disabled={isSubmitting}
                         className={`${styles.actionButton} ${styles.confirmBtn}`}
                       >
-                        {isSubmitting ? 'Enviando...' : `Confirmar ${confirmedGuests} ${confirmedGuests === 1 ? 'persona' : 'personas'}`}
+                        {isSubmitting ? messages['rsvp.sending'] : `${messages['rsvp.confirm']} ${confirmedGuests} ${confirmedGuests === 1 ? messages['rsvp.person'] : messages['rsvp.confirmPeople']}`}
                       </button>
                       
                       <button 
@@ -546,7 +548,7 @@ const RSVPPage = () => {
                         disabled={isSubmitting}
                         className={`${styles.actionButton} ${styles.denyBtn}`}
                       >
-                        {isSubmitting ? 'Enviando...' : 'No podré asistir'}
+                        {isSubmitting ? messages['rsvp.sending'] : messages['rsvp.cannotAttend']}
                       </button>
                     </div>
                   </div>

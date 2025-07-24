@@ -183,16 +183,16 @@ END:VCALENDAR`.replace(/\n/g, '\r\n');
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <h3 className={styles.calendarTitle}>Agregar a tu Calendario</h3>
-        <p className={styles.calendarSubtitle}>No olvides la fecha - ¡Guarda el evento en tu calendario!</p>
+        <h3 className={styles.calendarTitle}>{intl.formatMessage({ id: 'calendar.addToCalendar' })}</h3>
+        <p className={styles.calendarSubtitle}>{intl.formatMessage({ id: 'calendar.dontForgetDate' })}</p>
         
         <div className={styles.calendarButtons}>
           <button
             onClick={downloadICSFile}
             className={`${styles.calendarButton} ${styles.icsButton}`}
-            title="Descargar archivo .ics"
+            title={intl.formatMessage({ id: 'calendar.downloadICS' })}
           >
-            📅 Descargar .ICS
+            📅 {intl.formatMessage({ id: 'calendar.downloadICS' })}
           </button>
           
           <a
@@ -201,7 +201,7 @@ END:VCALENDAR`.replace(/\n/g, '\r\n');
             rel="noopener noreferrer"
             className={`${styles.calendarButton} ${styles.googleButton}`}
           >
-            🗓️ Google Calendar
+            🗓️ {intl.formatMessage({ id: 'calendar.googleCalendar' })}
           </a>
           
           <a
@@ -210,7 +210,7 @@ END:VCALENDAR`.replace(/\n/g, '\r\n');
             rel="noopener noreferrer"
             className={`${styles.calendarButton} ${styles.outlookButton}`}
           >
-            📆 Outlook
+            📆 {intl.formatMessage({ id: 'calendar.outlook' })}
           </a>
           
           <a
@@ -219,7 +219,7 @@ END:VCALENDAR`.replace(/\n/g, '\r\n');
             rel="noopener noreferrer"
             className={`${styles.calendarButton} ${styles.yahooButton}`}
           >
-            🗓️ Yahoo Calendar
+            🗓️ {intl.formatMessage({ id: 'calendar.yahooCalendar' })}
           </a>
         </div>
       </motion.div>
