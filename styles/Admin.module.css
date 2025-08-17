@@ -369,6 +369,15 @@
   font-weight: 500;
 }
 
+.badgeError {
+  background: #dc3545;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 /* Guests Lists */
 .guestsList {
   margin-top: 1rem;

@@ -26,6 +26,13 @@ const Admin = () => {
   const [editForm, setEditForm] = useState({ name: '', total_invitations: '' });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [groupToDelete, setGroupToDelete] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showDenyModal, setShowDenyModal] = useState(false);
+  const [showEditConfirmedModal, setShowEditConfirmedModal] = useState(false);
+  const [groupToConfirm, setGroupToConfirm] = useState(null);
+  const [groupToDeny, setGroupToDeny] = useState(null);
+  const [groupToEditConfirmed, setGroupToEditConfirmed] = useState(null);
+  const [confirmedGuests, setConfirmedGuests] = useState('');
   
   console.log("groups", groups);
   
@@ -252,6 +259,99 @@ const Admin = () => {
     }
   };
 
+  // Handle confirm invitation
+  const handleConfirmInvitation = (group) => {
+    setGroupToConfirm(group);
+    setConfirmedGuests(group.confirmed_invitations?.toString() || '');
+    setShowConfirmModal(true);
+  };
+
+  // Handle deny invitation
+  const handleDenyInvitation = (group) => {
+    setGroupToDeny(group);
+    setShowDenyModal(true);
+  };
+
+  // Handle edit confirmed guests
+  const handleEditConfirmed = (group) => {
+    setGroupToEditConfirmed(group);
+    setConfirmedGuests(group.confirmed_invitations?.toString() || '');
+    setShowEditConfirmedModal(true);
+  };
+
+  // Confirm invitation API call
+  const confirmInvitation = async () => {
+    if (!groupToConfirm || !confirmedGuests) return;
+
+    try {
+      const response = await fetch('/api/groups/confirm-invitation', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: groupToConfirm.id,
+          confirmed_invitations: parseInt(confirmedGuests)
+        })
+      });
+
+      if (response.ok) {
+        loadData();
+        setShowConfirmModal(false);
+        setGroupToConfirm(null);
+        setConfirmedGuests('');
+      }
+    } catch (error) {
+      console.error('Error confirming invitation:', error);
+    }
+  };
+
+  // Deny invitation API call
+  const denyInvitation = async () => {
+    if (!groupToDeny) return;
+
+    try {
+      const response = await fetch('/api/groups/deny-invitation', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: groupToDeny.id
+        })
+      });
+
+      if (response.ok) {
+        loadData();
+        setShowDenyModal(false);
+        setGroupToDeny(null);
+      }
+    } catch (error) {
+      console.error('Error denying invitation:', error);
+    }
+  };
+
+  // Edit confirmed guests API call
+  const editConfirmedGuests = async () => {
+    if (!groupToEditConfirmed || !confirmedGuests) return;
+
+    try {
+      const response = await fetch('/api/groups/confirm-invitation', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: groupToEditConfirmed.id,
+          confirmed_invitations: parseInt(confirmedGuests)
+        })
+      });
+
+      if (response.ok) {
+        loadData();
+        setShowEditConfirmedModal(false);
+        setGroupToEditConfirmed(null);
+        setConfirmedGuests('');
+      }
+    } catch (error) {
+      console.error('Error editing confirmed guests:', error);
+    }
+  };
+
   // Filter groups based on current filters
   const filteredGroups = groups.filter(group => {
     // Filter by sent status
@@ -461,6 +561,39 @@ const Admin = () => {
                           Marcar como Enviado
                         </button>
                       )}
+                      {group.sent_status && !group.confirmed_status && !group.deny_status && (
+                        <>
+                          <button 
+                            onClick={() => handleConfirmInvitation(group)}
+                            className={styles.btnPrimary}
+                            style={{ background: '#28a745' }}
+                          >
+                            Confirmar
+                          </button>
+                          <button 
+                            onClick={() => handleDenyInvitation(group)}
+                            className={styles.btnDanger}
+                          >
+                            Rechazar
+                          </button>
+                        </>
+                      )}
+                      {group.confirmed_status && (
+                        <>
+                          <button 
+                            onClick={() => handleEditConfirmed(group)}
+                            className={styles.btnEdit}
+                          >
+                            Editar Confirmados
+                          </button>
+                          <button 
+                            onClick={() => handleDenyInvitation(group)}
+                            className={styles.btnDanger}
+                          >
+                            Rechazar
+                          </button>
+                        </>
+                      )}
                       <button 
                         onClick={() => handleDeleteGroup(group.id)}
                         className={styles.btnDanger}
@@ -480,7 +613,7 @@ const Admin = () => {
                       {group.sent_status && <span className={styles.badge}>Enviado</span>}
                       {group.opened_status && <span className={styles.badge}>Abierto</span>}
                       {group.confirmed_status && <span className={styles.badge}>Confirmado</span>}
-                      {group.deny_status && <span className={styles.badge}>Rechazado</span>}
+                      {group.deny_status && <span className={styles.badgeError}>Rechazado</span>}
                     </div>
                     <div className={styles.rsvpLink}>
                       <label>Enlace RSVP:</label>
@@ -712,6 +845,139 @@ ${link}`;
                 className={styles.btnDanger}
               >
                 Eliminar de todas formas
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para confirmar invitación */}
+      {showConfirmModal && groupToConfirm && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h3>Confirmar Invitación</h3>
+            <p>
+              ¿Estás seguro de que quieres confirmar la invitación del grupo <strong>"{groupToConfirm.name}"</strong>?
+              <br /><br />
+              Especifica el número de invitados que confirmaron:
+            </p>
+            <div className={styles.editForm}>
+              <div className={styles.formGroup}>
+                <label>Número de invitados confirmados:</label>
+                <input
+                  type="number"
+                  min="1"
+                  max={groupToConfirm.total_invitations}
+                  value={confirmedGuests}
+                  onChange={(e) => setConfirmedGuests(e.target.value)}
+                  placeholder="Ej: 2"
+                />
+              </div>
+            </div>
+            <div className={styles.modalActions}>
+              <button 
+                onClick={() => {
+                  setShowConfirmModal(false);
+                  setGroupToConfirm(null);
+                  setConfirmedGuests('');
+                }}
+                className={styles.btnCancel}
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={confirmInvitation}
+                className={styles.btnPrimary}
+                disabled={!confirmedGuests || parseInt(confirmedGuests) < 1}
+                style={{ background: '#28a745' }}
+              >
+                Confirmar Invitación
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de confirmación para rechazar invitación */}
+      {showDenyModal && groupToDeny && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h3>Rechazar Invitación</h3>
+            <p>
+              ¿Estás seguro de que quieres rechazar la invitación del grupo <strong>"{groupToDeny.name}"</strong>?
+              <br /><br />
+              {groupToDeny.confirmed_status ? (
+                <>
+                  <strong>Atención:</strong> Este grupo ya estaba confirmado con <strong>{groupToDeny.confirmed_invitations}</strong> invitados.
+                  <br /><br />
+                  Esta acción cambiará el estado a rechazado y pondrá las invitaciones confirmadas en 0.
+                </>
+              ) : (
+                "Esta acción marcará el grupo como rechazado y pondrá las invitaciones confirmadas en 0."
+              )}
+            </p>
+            <div className={styles.modalActions}>
+              <button 
+                onClick={() => {
+                  setShowDenyModal(false);
+                  setGroupToDeny(null);
+                }}
+                className={styles.btnCancel}
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={denyInvitation}
+                className={styles.btnDanger}
+              >
+                Rechazar Invitación
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para editar confirmados */}
+      {showEditConfirmedModal && groupToEditConfirmed && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h3>Editar Invitados Confirmados</h3>
+            <p>
+              Edita el número de invitados confirmados para el grupo <strong>"{groupToEditConfirmed.name}"</strong>:
+              <br /><br />
+              Actualmente confirmados: <strong>{groupToEditConfirmed.confirmed_invitations}</strong>
+            </p>
+            <div className={styles.editForm}>
+              <div className={styles.formGroup}>
+                <label>Nuevo número de invitados confirmados:</label>
+                <input
+                  type="number"
+                  min="0"
+                  max={groupToEditConfirmed.total_invitations}
+                  value={confirmedGuests}
+                  onChange={(e) => setConfirmedGuests(e.target.value)}
+                  placeholder="Ej: 3"
+                />
+              </div>
+            </div>
+            <div className={styles.modalActions}>
+              <button 
+                onClick={() => {
+                  setShowEditConfirmedModal(false);
+                  setGroupToEditConfirmed(null);
+                  setConfirmedGuests('');
+                }}
+                className={styles.btnCancel}
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={editConfirmedGuests}
+                className={styles.btnPrimary}
+                disabled={confirmedGuests === '' || parseInt(confirmedGuests) < 0}
+                style={{ background: '#17a2b8' }}
+              >
+                Actualizar Confirmados
               </button>
             </div>
           </div>
